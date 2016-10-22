@@ -1,0 +1,6 @@
+1. Da cd ein Command vom Bash ist, besitzt es keine eigene Manual Page. Es wird auf der Manual Page von bash erwähnt.
+
+
+2. Es fällt auf, dass das tar-Archiv mehr Speicher belegt als das Verzeichnis, aus dem es gepackt wurde.
+
+3. Dies ist möglich indem man folgenden Befehl nutzt: tar -cvzf Archivname.tar.gz Verzeichnisname
