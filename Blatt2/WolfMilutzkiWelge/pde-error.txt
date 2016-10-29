@@ -1,0 +1,13 @@
+Zeile 96, Für die Matrix wird zu wenig Speicher allokiert.
+Lösung: M = malloc (sizeof (double) * (N + 1) * (N + 1) * 2);
+
+Zeile 165, Matrix wird freigegeben, wodurch in Zeile 166 und 168 keine Pointer mehr in Matrix[1] und Matrix[0] sind
+Lösung: free (Matrix) von Zeile 165 nach Zeile 170 verschieben.
+
+Zeile 230, m2 und i sind vertauscht, dadurch wird auf nicht existenten Speicher zugegriffen
+Lösung: Zeile 230 - 232 durch folgenden Code ersetzen:
+star = -Matrix[m2][i - 1][j]
+
+- Matrix[m2][i][j - 1] + 4 * Matrix[m2][i][j] -
+		
+Matrix[m2][i][j + 1] - Matrix[m2][i + 1][j];

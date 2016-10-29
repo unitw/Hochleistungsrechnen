@@ -1,0 +1,19 @@
+Zeile 12, Es wird kein Speicher für das Array allokiert, dadurch gehen die Werte nach Abschluss der Funktion verloren
+
+Zeile 19, Es werden char-Werte statt int-Werte genommen zum allokieren des Speichers.
+
+Zeile 20, Der Wert muss in buf[1] geschrieben werden.
+
+Zeile 27,28, Speicher wird falsch allokiert werden.
+
+Zeile 36, Es werden char-Werte statt int-Werte genommen zum allokieren des Speichers.
+
+Zeile 37, Der Wert muss in buf[0] geschrieben werden.
+
+Zeile 38, Der Wert wird aus dem Speicher gelöscht bevor er returned werden kann.
+
+Zeile 55, Hier fehlen noch free-Funktionen für p[0], p[2] und p[3]. Außerdem müssen p[1] und p[2] als pointer aufegerufen werden.
+	free(*p[0]);
+	free(*p[1]);
+	free(p[2]);
+	free(p[3]);
