@@ -1,0 +1,27 @@
+- Die erste Ausgabe:
+  buf = {0, 0, 0, 0, 1, 0}
+  buf[2] = 0
+
+  Die Ausgabe in der nächsten Zeile:
+  buf = {1, 1, 2, 3, 4, 5}
+  buf[2] = 2
+
+  buf in mistake1() ist ein int
+
+
+
+- buf in mistake2() ist ein int
+
+
+
+- Die Ausgabe gibt:
+  Program received signal SIGSEV, Segmentation fault.
+  0x00000000004006fc in mistake3 () at simple.c:29
+  29	buf[0] = 3;
+
+  folgende Frames liegen auf dem Stack:
+  #0	0x00000000004006fc in mistake3 () at simple.c:29
+  #1	0x0000000000400774 in main () at simple.c:46
+
+  Die Ausgabe von p gibt:
+  p = {0x4, 0x602014, 0x7fffffffd040, 0x0}
