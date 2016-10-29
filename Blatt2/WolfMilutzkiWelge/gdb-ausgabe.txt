@@ -25,3 +25,8 @@
 
   Die Ausgabe von p gibt:
   p = {0x4, 0x602014, 0x7fffffffd040, 0x0}
+
+
+
+- call mistake4()
+  $1 = (int *) 0x602030
