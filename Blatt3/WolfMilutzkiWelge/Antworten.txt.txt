@@ -20,8 +20,7 @@ Jobs auf einem System laufen lassen wollen. Für diese Jobs wird eine Queue erste
 15.)abu, amd, mangy, nehalem, west . Die  Partitionen kann durch den “-p” Parameter gewechselt werden, indem man  bei salloc,sbathc,srun und etc verwendet.
 Aufgabe 2:
 4.)
-Es ist kein Muster zu erkennen, die Knoten führen ihre Shells aus und  es gibt auch keine einheitlichen Abstände zwischen den Timestamps , dass es nahe liegt , dass die einzelnen Ausführung alle ohne vorher festgelegte Reihenfolge untereinander ausgeführt werden.
+- Es ist kein Muster zu erkennen, die Knoten führen ihre Shells aus und  es gibt auch keine einheitlichen Abstände zwischen den Timestamps , dass es nahe liegt , dass die einzelnen Ausführung alle ohne vorher festgelegte Reihenfolge untereinander ausgeführt werden.
 
-
-Dies würde nicht funktionieren, da dann jeweils auf jedem Node eine timescript.out erzeugt werden würde und man somit nicht die gesammelten Zeiten in einer Datei hätte.
+- Dies würde nicht funktionieren, da dann jeweils auf jedem Node eine timescript.out erzeugt werden würde und man somit nicht die gesammelten Zeiten in einer Datei hätte.
 
