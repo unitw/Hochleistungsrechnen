@@ -1,0 +1,27 @@
+Aufgabe 1:
+1.) Batch-Queuing ist das Verfahren das genutzt wird wenn mehrere Nutzer verschiedene
+Jobs auf einem System laufen lassen wollen. Für diese Jobs wird eine Queue erstellt. Da Jobs meistens als Batchskripte laufen ,wird hier der Begriff Batch-Queuing verwendet.
+2.)Die Jobs die in das Batch-Queuing-System aufgenommen werden, werden auf die verfügbaren Ressourcen verteilt und entsprechend priorisiert.
+3.)Moab Cluster Suite,Oracle Grid Engine,SLURM
+4.)Auf dem Cluster wird Simple Linux Utility for Resource Management (SLURM) verwendet.
+5.)Der Befehl sbatch submitted eine Batchdatei an den SLURM-Controller. Durch die Parameter können verschiedene Aspekte, wie zB Priorisierung oder Ausführungszeitpunkt beeinflusst werden. 
+6.)Mit squeue kann man sich eine Liste der laufenden Jobs ausgeben lassen, die nach Priorität sortiert ist.  In der Liste werden u.a State und Runtime des Jobs angezeigt.
+7.)sview ist die grafische Benutzeroberfläche die benutzt wird um den Status von SLURM anzusehen und zu modifizieren.Der wichtigste Vorteil ist die genauere Darstellung der Jobs und Partitionen und die Möglichkeit direkt die Konfiguration zu verändern.
+8.) Der Befehl um einen Job zu löschen lautet “scancel <jobid>”  wobei die JobId bekannt sein muss.
+9.) Nein, da Knoten die bereits allokiert sind von anderen Jobs nicht verwendet werden können.
+10.) scontrol show jobid -dd <jobid> oder sstat <jobid>
+11.)backfill, builtin, wiki und wiki2 , wobei backfill verwendet wird 
+12.)$ salloc -p west -w west8  | da west7 belegt war
+      $ ssh west8
+      $ hostname 
+      Ausgabe: west8
+13.)sinfo sagt 6 Stunden
+14.) mit sview im root modus lassen sich die Prioritäten anschauen und verändern
+15.)abu, amd, mangy, nehalem, west . Die  Partitionen kann durch den “-p” Parameter gewechselt werden, indem man  bei salloc,sbathc,srun und etc verwendet.
+Aufgabe 2:
+4.)
+Es ist kein Muster zu erkennen, die Knoten führen ihre Shells aus und  es gibt auch keine einheitlichen Abstände zwischen den Timestamps , dass es nahe liegt , dass die einzelnen Ausführung alle ohne vorher festgelegte Reihenfolge untereinander ausgeführt werden.
+
+
+Dies würde nicht funktionieren, da dann jeweils auf jedem Node eine timescript.out erzeugt werden würde und man somit nicht die gesammelten Zeiten in einer Datei hätte.
+
