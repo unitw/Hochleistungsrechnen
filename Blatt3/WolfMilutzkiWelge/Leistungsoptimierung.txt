@@ -1,0 +1,23 @@
+$ ./partdiff-seq 1 2 128 1 2 1024
+
+time: 68 sec;
+
+
+Optimierung : “-O3” als zusätzlichen CFLAGS Parameter im Makefile in Zeile 5 angeben.
+
+
+CFLAGS = -std=c99 -pedantic -Wall -Wextra -pg -O3
+
+
+time: 24 sec
+
+
+Optimierung :  In Zeile 228 die For-Schleifen vertauscht. Dadurch , dass  nun zuerst über die Spalten iteriert wird und dann erst über die Zeilen fast um den Faktor 5 schneller. Der Grund ist , dass die Reihen beieinander im Speicher liegen. So sind alle kohärent im Ram und werde  in die selbe Cacheline geladen.
+
+
+for (i = 1; i < N; i++)
+    {
+    	for (j = 1; j < N; j++)
+    	{
+ 
+time: 5 sec
