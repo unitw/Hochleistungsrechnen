@@ -1,0 +1,10 @@
+Die Bearbeitungszeit bitte in ganzen Stunden angeben (aufrunden).
+In den restlichen Zeilen jeweils ein X in der zutreffenden Spalte setzen.
+
+Bearbeitungszeit: 6 
+Schwierigkeit:     [ ] zu leicht         [X] genau richtig     [ ] zu schwer 
+Lehrreich:         [ ] wenig             [ ] etwas             [X] sehr 
+Verständlichkeit:  [ ] großteils unklar  [X] teilweise unklar  [ ] verständlich  
+
+Kommentar:
+ Die letzte  Aufgabe war ohne ordentlichen Einstiegspunkt und  nach dem ersten Lesen war der Arbeitsauftrag sehr unscharf. Besser wäre es weiterhin mehr Quellen in der Form von URLs zur Verfügung zu stellen ,da es meist auf bestimmte Seite hinausläuft ,die am Ende jeder benutzt.
