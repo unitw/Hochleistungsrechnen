@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #SBATCH -N 4
 #SBATCH -n 16
