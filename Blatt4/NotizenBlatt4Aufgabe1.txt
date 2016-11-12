@@ -1,0 +1,27 @@
+Funktionsaufruf:
+$ ./partdiff-openmp 12 2 512 2 2 64
+
+
+			1.Durchlauf	2.Durchlauf	3.Durchlauf
+
+Keine Paralellisierung	35,854sec	35,776sec	35,804sec
+
+
+Paralellisiert		3,502sec	4,188sec	4,272sec
+
+
+
+Funktionsaufruf:
+$ ./partdiff-openmp 12 2 512 2 1 1e-6
+
+
+			1. Durchlauf	2.Durchlauf	3.Durchlauf
+
+Keine Paralellisierung	0,677sec	0,681sec	0,677sec
+
+
+Paralellisiert		0,171sec	0,165sec	0,187sec
+
+
+Zeit: 
+165min, davon ca.45min für Fehlersuche
