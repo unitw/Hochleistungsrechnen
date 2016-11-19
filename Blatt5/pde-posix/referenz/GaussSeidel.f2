@@ -1,9 +1,8 @@
-
-Berechnungszeit:    0 Sekunden
-Berechnungsmethode: Gauss-Seidel
+Berechnungszeit:    0.000000 s
+Berechnungsmethode: Gauß-Seidel
 Interlines:         0
 Stoerfunktion:      f(x,y)=2pi^2*sin(pi*x)sin(pi*y)
-Terminierung:       Hinreichende Genaugkeit
+Terminierung:       Anzahl der Iterationen
 Anzahl Iterationen: 48
 Norm des Fehlers:   9.154544e-05
 Matrix:

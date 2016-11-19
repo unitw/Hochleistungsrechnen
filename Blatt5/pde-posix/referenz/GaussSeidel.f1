@@ -1,9 +1,8 @@
-
-Berechnungszeit:    0 Sekunden
-Berechnungsmethode: Gauss-Seidel
+Berechnungszeit:    0.000000 s
+Berechnungsmethode: Gauß-Seidel
 Interlines:         0
 Stoerfunktion:      f(x,y)=0
-Terminierung:       Hinreichende Genaugkeit
+Terminierung:       Anzahl der Iterationen
 Anzahl Iterationen: 47
 Norm des Fehlers:   8.677282e-05
 Matrix:

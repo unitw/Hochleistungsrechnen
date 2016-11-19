@@ -8,7 +8,7 @@
 /**                                                                        **/
 /** File:      partdiff-seq.c                                              **/
 /**                                                                        **/
-/** Purpose:   Partial differential equation solver for Gauss-Seidel and   **/
+/** Purpose:   Partial differential equation solver for Gauß-Seidel and   **/
 /**            Jacobi method.                                              **/
 /**                                                                        **/
 /****************************************************************************/
@@ -116,8 +116,7 @@ allocateMemory (size_t size)
 
 	if ((p = malloc(size)) == NULL)
 	{
-		printf("Speicherprobleme! (%" PRIu64 " Bytes)\n", size);
-		/* exit program */
+		printf("Speicherprobleme! (%" PRIu64 " Bytes angefordert)\n", size);
 		exit(1);
 	}
 
@@ -256,7 +255,7 @@ static
 void
 calculate (struct calculation_arguments const* arguments, struct calculation_results *results, struct options const* options)
 {
-	int m1, m2;                                 /* used as indices for old and new matrices       */
+	int m1, m2;                                 /* used as indices for old and new matrices */
 	double maxresiduum;                         /* maximum residuum value of a slave in iteration */
 
 	double const h = arguments->h;
@@ -342,11 +341,11 @@ calculate (struct calculation_arguments const* arguments, struct calculation_res
 		results->stat_precision = maxresiduum;
 
 		/* exchange m1 and m2 */
-		int tmp = m1;
+		int i = m1;
 		m1 = m2;
-		m2 = tmp;
+		m2 = i;
 
-		/* check for stopping calculation, depending on termination method */
+		/* check for stopping calculation depending on termination method */
 		if (options->termination == TERM_PREC)
 		{
 			if (maxresiduum < options->term_precision)
@@ -382,7 +381,7 @@ displayStatistics (struct calculation_arguments const* arguments, struct calcula
 
 	if (options->method == METH_GAUSS_SEIDEL)
 	{
-		printf("Gauss-Seidel");
+		printf("Gauß-Seidel");
 	}
 	else if (options->method == METH_JACOBI)
 	{
@@ -465,22 +464,21 @@ main (int argc, char** argv)
 	struct calculation_arguments arguments;
 	struct calculation_results results;
 
-	/* get parameters */
-	AskParams(&options, argc, argv);              /* ************************* */
+	AskParams(&options, argc, argv);
 
-	initVariables(&arguments, &results, &options);           /* ******************************************* */
+	initVariables(&arguments, &results, &options);
 
-	allocateMatrices(&arguments);        /*  get and initialize variables and matrices  */
-	initMatrices(&arguments, &options);            /* ******************************************* */
+	allocateMatrices(&arguments);
+	initMatrices(&arguments, &options);
 
-	gettimeofday(&start_time, NULL);                   /*  start timer         */
-	calculate(&arguments, &results, &options);                                      /*  solve the equation  */
-	gettimeofday(&comp_time, NULL);                   /*  stop timer          */
+	gettimeofday(&start_time, NULL);
+	calculate(&arguments, &results, &options);
+	gettimeofday(&comp_time, NULL);
 
 	displayStatistics(&arguments, &results, &options);
 	DisplayMatrix(&arguments, &results, &options);
 
-	freeMatrices(&arguments);                                       /*  free memory     */
+	freeMatrices(&arguments);
 
 	return 0;
 }
