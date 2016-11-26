@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+#SBATCH --ntasks=25
+#SBATCH --output=mpi_run.out
+
+echo "" > timescript1.out
+echo "" > timescript2.out
+
+mpirun ./timempi >> timescript1.out
+
+mpirun ./timempi2 >> timescript2.out
