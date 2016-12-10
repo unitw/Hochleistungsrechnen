@@ -8,7 +8,7 @@
 /**                                                                        **/
 /** File:      partdiff-par.c                                              **/
 /**                                                                        **/
-/** Purpose:   Partial differential equation solver for Gauss-Seidel and   **/
+/** Purpose:   Partial differential equation solver for Gauß-Seidel and   **/
 /**            Jacobi method.                                              **/
 /**                                                                        **/
 /****************************************************************************/
@@ -117,8 +117,7 @@ allocateMemory (size_t size)
 
 	if ((p = malloc(size)) == NULL)
 	{
-		printf("Speicherprobleme! (%" PRIu64 " Bytes)\n", size);
-		/* exit program */
+		printf("Speicherprobleme! (%" PRIu64 " Bytes angefordert)\n", size);
 		exit(1);
 	}
 
@@ -197,8 +196,6 @@ allocateMatrices_mpi (struct calculation_arguments* arguments, struct comm_optio
 		prev_extras = comm->rank;
 	}
 	comm->absoluteStartRow = (chunkSize * comm->rank) + prev_extras;
-
-	printf("Rank %d rows %lu N %lu from: %lu to: %lu\n", comm->rank, rows, arguments->N, comm->absoluteStartRow, comm->absoluteStartRow + comm->matrixRows -3);
 }
 
 /* ************************************************************************ */
@@ -315,10 +312,10 @@ static
 void
 calculate (struct calculation_arguments const* arguments, struct calculation_results *results, struct options const* options)
 {
-	int i, j;                                   /* local variables for loops  */
-	int m1, m2;                                 /* used as indices for old and new matrices       */
+	int i, j;                                   /* local variables for loops */
+	int m1, m2;                                 /* used as indices for old and new matrices */
 	double star;                                /* four times center value minus 4 neigh.b values */
-	double residuum;                            /* residuum of current iteration                  */
+	double residuum;                            /* residuum of current iteration */
 	double maxresiduum;                         /* maximum residuum value of a slave in iteration */
 
 	int const N = arguments->N;
@@ -393,7 +390,7 @@ calculate (struct calculation_arguments const* arguments, struct calculation_res
 		m1 = m2;
 		m2 = i;
 
-		/* check for stopping calculation, depending on termination method */
+		/* check for stopping calculation depending on termination method */
 		if (options->termination == TERM_PREC)
 		{
 			if (maxresiduum < options->term_precision)
@@ -417,10 +414,10 @@ static
 void
 calculate_mpi (struct calculation_arguments const* arguments, struct calculation_results *results, struct options const* options, struct comm_options* comm)
 {
-	int i, j;                                   /* local variables for loops  */
-	int m1, m2;                                 /* used as indices for old and new matrices       */
+	int i, j;                                   /* local variables for loops */
+	int m1, m2;                                 /* used as indices for old and new matrices */
 	double star;                                /* four times center value minus 4 neigh.b values */
-	double residuum;                            /* residuum of current iteration                  */
+	double residuum;                            /* residuum of current iteration */
 	double maxresiduum;                         /* maximum residuum value of a slave in iteration */
 	double const h = arguments->h;
 	uint64_t absoluteRow = comm->absoluteStartRow;
@@ -435,8 +432,6 @@ calculate_mpi (struct calculation_arguments const* arguments, struct calculation
 
 	const int nextTarget = (comm->rank + 1) % comm->num_procs;
 	const int prevTarget = ((comm->rank - 1) >= 0)? comm->rank -1 : comm->num_procs -1;
-
-	printf("Rank %d start %d stop %d next %d prev %d\n", comm->rank, startRow, stopRow, nextTarget, prevTarget);
 
 	double pih = 0.0;
 	double fpisin = 0.0;
@@ -548,7 +543,7 @@ calculate_mpi (struct calculation_arguments const* arguments, struct calculation
 		m1 = m2;
 		m2 = i;
 
-		/* check for stopping calculation, depending on termination method */
+		/* check for stopping calculation depending on termination method */
 		if (options->termination == TERM_PREC)
 		{
 			if (maxresiduum < options->term_precision)
@@ -582,7 +577,7 @@ displayStatistics (struct calculation_arguments const* arguments, struct calcula
 
 	if (options->method == METH_GAUSS_SEIDEL)
 	{
-		printf("Gauss-Seidel");
+		printf("Gauß-Seidel");
 	}
 	else if (options->method == METH_JACOBI)
 	{
@@ -697,7 +692,7 @@ DisplayMatrix_mpi (struct calculation_arguments* arguments, struct calculation_r
       {
         /* use the tag to receive the lines in the correct order
          * the line is stored in Matrix[0], because we do not need it anymore */
-        MPI_Recv(Matrix[1], elements, MPI_DOUBLE, MPI_ANY_SOURCE, 42 + y, MPI_COMM_WORLD, &status);
+        MPI_Recv(Matrix[0], elements, MPI_DOUBLE, MPI_ANY_SOURCE, 42 + y, MPI_COMM_WORLD, &status);
       }
     }
     else
@@ -706,7 +701,7 @@ DisplayMatrix_mpi (struct calculation_arguments* arguments, struct calculation_r
       {
         /* if the line belongs to this process, send it to rank 0
          * (line - from + 1) is used to calculate the correct local address */
-        MPI_Send(Matrix[(line - from) + 1], elements, MPI_DOUBLE, 0, 42 + y, MPI_COMM_WORLD);
+        MPI_Send(Matrix[line - from + 1], elements, MPI_DOUBLE, 0, 42 + y, MPI_COMM_WORLD);
       }
     }
 
@@ -719,12 +714,12 @@ DisplayMatrix_mpi (struct calculation_arguments* arguments, struct calculation_r
         if (line >= from && line <= to)
         {
           /* this line belongs to rank 0 */
-          printf("%7.4f", Matrix[1 + line][col]);
+          printf("%7.4f", Matrix[line][col]);
         }
         else
         {
           /* this line belongs to another rank and was received above */
-          printf("%7.4f", Matrix[1][col]);
+          printf("%7.4f", Matrix[0][col]);
         }
       }
 
@@ -752,39 +747,39 @@ main (int argc, char** argv)
 	MPI_Comm_size(MPI_COMM_WORLD, &comm.num_procs);
 
 	/* get parameters */
-	AskParams(&options, argc, argv, comm.rank);              /* ************************* */
-	initVariables(&arguments, &results, &options);           /* ******************************************* */
+	AskParams(&options, argc, argv, comm.rank);
+	initVariables(&arguments, &results, &options);
 
 	if (options.method == METH_JACOBI && comm.num_procs > 1)
 	{
 		allocateMatrices_mpi(&arguments, &comm);
 		initMatrices_mpi(&arguments, &options, &comm); 
 
-		gettimeofday(&start_time, NULL);                   /*  start timer         */
-		calculate_mpi(&arguments, &results, &options, &comm);                                      /*  solve the equation  */
-		gettimeofday(&comp_time, NULL);                   /*  stop timer          */
+		gettimeofday(&start_time, NULL);
+		calculate_mpi(&arguments, &results, &options, &comm);
+		gettimeofday(&comp_time, NULL);
 
 		if (comm.rank == ROOT)
 		{
 			displayStatistics(&arguments, &results, &options);
 		}
 
-		DisplayMatrix_mpi(&arguments, &results, &options, comm.rank, comm.num_procs, comm.absoluteStartRow, comm.absoluteStartRow + comm.matrixRows -3);
-		freeMatrices(&arguments);                                       /*  free memory     */
+		DisplayMatrix_mpi(&arguments, &results, &options, comm.rank, comm.num_procs, comm.absoluteStartRow + 1, comm.absoluteStartRow + comm.matrixRows - 1);
+		freeMatrices(&arguments);
 	}
 	else
 	{
-		allocateMatrices(&arguments);        /*  get and initialize variables and matrices  */
-		initMatrices(&arguments, &options);            /* ******************************************* */
+		allocateMatrices(&arguments);
+		initMatrices(&arguments, &options);
 
-		gettimeofday(&start_time, NULL);                   /*  start timer         */
-		calculate(&arguments, &results, &options);                                      /*  solve the equation  */
-		gettimeofday(&comp_time, NULL);                   /*  stop timer          */
+		gettimeofday(&start_time, NULL);
+		calculate(&arguments, &results, &options);
+		gettimeofday(&comp_time, NULL);
 
 		displayStatistics(&arguments, &results, &options);
 		DisplayMatrix(&arguments, &results, &options);
 
-		freeMatrices(&arguments);                                       /*  free memory     */
+		freeMatrices(&arguments);
 	}
 
 	MPI_Finalize();
