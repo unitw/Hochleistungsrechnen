@@ -123,7 +123,7 @@
 	//Die barrier ist noetig, damit alle Prozesse hier auf dem gleichen stand sind und das korrekte residuum zurueck gegeben wird.
 	if(arguments->commSize > 1)
 	{
-	  MPI_Barrier();
+	 
 	  if(rank == 0) //empfangen
 	  {
 	    MPI_Recv()
