@@ -1,0 +1,139 @@
+﻿calculateGaussSeidel ()
+{
+	//werte voreberechnen
+	//iterrieren
+	while (term_iteration > 0)
+	{
+	    //Matrix_In und Matrix_Out der uebersichthalber benutzen
+		// Hier wird der erste Rank aussenvor gelassen, da das verfahren sonst blockieren wuerde
+		if(arguments->rank > 0)
+		{
+		  //hier werden die werte, welche unten gesendet wurden nun empfangen, hierbei ist rank + iteration noetig, damit
+		  //es zu keinem Konfikt zwischen dem globalen maxresiduum kommt.
+		  MPI_Recv();
+		  if(options->termination == TERM_PREC || term_iteration == 1) 
+		  {
+		    //das globale residuum welches in dieser kommenden iteration vom Prozess rank - 1 berechnet wurde abholen und damit weiter rechnen
+		    MPI_Recv();
+		  }
+	 
+	  //das termination flag vom prozess rank - 1 abholen, um zu sehen, ob der Prozess seine letzten iterationen durchfuehren muss
+		  if(options->termination == TERM_PREC)
+		  {
+		    int term = 0;
+		
+			MPI_Recv();
+		    //wenn das termination flag noch kleiner ist als jetzt dann den flag erhoehen sonst so lassen,
+		    //bsp das Termination flag ist 1 der master Prozess hat aber in der jetzigen iteration beendet also ist term = 2 damit wird auch termination 2 
+		    //nicht ueber schrieben, falls vom kleineren Prozess term = 1 oder term = 0 kommen solte.
+		    if(terminate < term)
+		      terminate = term;
+		  }
+		}		
+
+		//wenn wir uns nicht in der ersten Iteration befinden die veränderten Zeilen tauschen
+		if(results->stat_iteration > 0)
+		{
+		  //da der letzte Prozess keine Zeile nach zu einem nachfolger geschickt hat muss dieser nicht betrachtet werden
+		  if(arguments->rank < arguments->commSize - 1)
+		  {
+		    //die werte werten jetzt von den unten geschickten empfangen, hierbei ist rank + iteration + 1 noetig, damit dies nicht
+		    //in den Konflikt mit dem gesendeten max residuum kommt. 
+		    MPI_Recv()
+
+		    //das termination flag auch von oben abholen, damit dies wenn es auf 1 gesetzt wurde auch den kommenden prozessen dies mitteilt
+		    if(options->termination == TERM_PREC)
+		    {
+		      int term = 0;
+		      MPI_Recv()
+		      //wenn das termination flag noch kleiner ist als jetzt dann den flag erhoehen sonst so lassen,
+		      //bsp das Termination flag ist 1 der master Prozess hat aber in der jetzigen iteration beendet also ist term = 2 damit wird auch termination 2 
+		      //nicht ueber schrieben, falls vom kleineren Prozess term = 1 oder term = 0 kommen solte.
+		      if(terminate < term)
+			terminate = term;
+		    }
+		  }
+		}
+
+		//die eigentliche Berechnung erfolgt wie immer.
+	
+	
+
+		//das maxresiduum der Iteration checken und mit dem bisherigen vergleichen
+		
+
+		if(arguments->commSize > 1)
+		{
+		  //da der 0. Prozess keinen vorgaenger hat gilt dies nur fuer die Prozesse von 1, ..., k
+		  //auserdem nicht durch fuehren, wenn die prozesse beenden, da sonst werte gesendet werden, die nicht mehr benoetigt werden
+		  //und es somit zu einer falschen ausgabe kommt.
+		  if(arguments->rank > 0 && term_iteration > 1 && terminate != 2)
+		  {
+		    //Die obere Zeile an den uebergeordenten Prozess senden, da dieser die werte fuer die letzte Zeile benoetigt.
+		    MPI_Send()
+
+		    //das termination flag an den kommenden prozess weiter reichen
+		    if(options->termination == TERM_PREC)
+		    {
+		      MPI_Send()
+		    }
+		  }
+		  //da der letzte Prozess keinen nachfolger hat, nur fuer die Prozesse 0, ..., k - 1 durchfuehren
+		  if(arguments->rank != arguments->commSize - 1)
+		  {
+
+		    //Die unteren Matrix werte sind fuer den naechsten Prozess wichtig, da dieser diese fuer die naechste Iteration benoetigt.
+		    //Daher senden wir diese werte an den Prozess plus 1. Der Tag ist außerdem wichtig, damit der Prozess die richtigen werte spaeter
+		    //abfragt, damit keine falschen werte entstehen.
+		   MPI_Send()
+		    //das neuberechnete residuum an den naechsten Prozess weiter reichen
+		    if(options->termination == TERM_PREC || term_iteration == 1)
+		    {
+		      MPI_Send()
+		      //das termination flag an den kommenden prozess weiter reichen
+		      if(options->termination == TERM_PREC)
+		      {
+			MPI_Send()
+		      }
+		    }
+		  }
+		}
+
+		//vorwarts iterieren
+		results->stat_iteration++;
+		//das residuum setzten
+		results->stat_precision = maxresiduum;
+		if(arguments->commSize > 1)
+		{
+		  if(terminate == 2)
+		  {
+		    //dieser Prozess befindet sich nun in der selben iteration wie der Prozess mit dem rank 0
+		  }
+		  if(rank == 0 && terminate == 1)
+		  {
+		    // das termination flag auf 2 sezten, dies bedeutet fuer alle Prozesse, dass dies die letzte iteration der matrix ist.
+	          }
+		}
+		/* abbrechen wenn das residuum kleiner als die Abbruchbedigung ist */
+		
+	}
+
+	//da das akutelle maxresiduum der Iteration immer weiter nach unten an den naechsten rank verschickt wurde jetzt das residuum an den
+	//ersten prozess zurueck senden damit dies korrekt ausgegeben werden kann.
+	//Die barrier ist noetig, damit alle Prozesse hier auf dem gleichen stand sind und das korrekte residuum zurueck gegeben wird.
+	if(arguments->commSize > 1)
+	{
+	 
+	  if(rank == 0) //empfangen
+	  {
+	    MPI_Recv()
+	  }
+	  else if(rank == arguments->commSize - 1) //senden
+	  {
+	    MPI_Send();
+	  }
+	 MPI_Barrier()//warten
+
+	}
+	
+}
