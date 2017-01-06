@@ -460,7 +460,7 @@ calculateGaussSeidel (struct calculation_arguments const* arguments, struct calc
 				Matrix_Out[i][j] = star;
 			}
 		}
-#endif
+
 		//das maxresiduum der Iteration checken und mit dem bisherigen vergleichen
 		maxresiduum = (maxresiduum < globalMaxResiduum) ? globalMaxResiduum : maxresiduum;
 
