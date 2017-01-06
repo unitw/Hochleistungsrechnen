@@ -40,7 +40,7 @@
 /****************************************************************************/
 /** int *method;                                                           **/
 /**         Bezeichnet das bei der L"osung der Poissongleichung zu         **/
-/**         verwendende Verfahren (Gauß-Seidel oder Jacobi).               **/
+/**         verwendende Verfahren (Gauss-Seidel oder Jacobi).              **/
 /** Werte:  METH_GAUSS_SEIDEL  oder METH_JACOBI (definierte Konstanten)    **/
 /****************************************************************************/
 /** int *interlines:                                                       **/
@@ -81,6 +81,10 @@
 #include <string.h>
 
 #include "partdiff-par.h"
+
+#define printf if(p_rank==0)printf
+
+static int p_rank = 1;
 
 static
 void
@@ -159,20 +163,19 @@ check_term_iteration (struct options* options)
 void
 AskParams (struct options* options, int argc, char** argv, int rank)
 {
+	p_rank = rank;
+
 	int ret;
 
-	if (rank == 0)
-	{
-		printf("============================================================\n");
-		printf("Program for calculation of partial differential equations.  \n");
-		printf("============================================================\n");
-		printf("(c) Dr. Thomas Ludwig, TU München.\n");
-		printf("    Thomas A. Zochler, TU München.\n");
-		printf("    Andreas C. Schmidt, TU München.\n");
-		printf("============================================================\n");
-		printf("\n");
-	}
-	
+	printf("============================================================\n");
+	printf("Program for calculation of partial differential equations.  \n");
+	printf("============================================================\n");
+	printf("(c) Dr. Thomas Ludwig, TU München.\n");
+	printf("    Thomas A. Zochler, TU München.\n");
+	printf("    Andreas C. Schmidt, TU München.\n");
+	printf("============================================================\n");
+	printf("\n");
+
 	if (argc < 2)
 	{
 		/* ----------------------------------------------- */
@@ -192,8 +195,8 @@ AskParams (struct options* options, int argc, char** argv, int rank)
 		do
 		{
 			printf("\n");
-			printf("Select calculation method:\n");
-			printf("  %1d: Gauß-Seidel.\n", METH_GAUSS_SEIDEL);
+			printf("Select calculationmethod:\n");
+			printf("  %1d: Gauss-Seidel.\n", METH_GAUSS_SEIDEL);
 			printf("  %1d: Jacobi.\n",       METH_JACOBI);
 			printf("method> ");
 			fflush(stdout);
@@ -216,10 +219,10 @@ AskParams (struct options* options, int argc, char** argv, int rank)
 		do
 		{
 			printf("\n");
-			printf("Select interference function:\n");
+			printf("Select interferencefunction:\n");
 			printf(" %1d: f(x,y)=0.\n",                        FUNC_F0);
 			printf(" %1d: f(x,y)=2pi^2*sin(pi*x)sin(pi*y).\n", FUNC_FPISIN);
-			printf("interference function> ");
+			printf("interferencefunction> ");
 			fflush(stdout);
 			ret = scanf("%" SCNu64, &(options->inf_func));
 			while (getchar() != '\n');
@@ -231,7 +234,7 @@ AskParams (struct options* options, int argc, char** argv, int rank)
 			printf("\n");
 			printf("Select termination:\n");
 			printf(" %1d: sufficient precision.\n",  TERM_PREC);
-			printf(" %1d: number of iterations.\n", TERM_ITER);
+			printf(" %1d: number of iterationes.\n", TERM_ITER);
 			printf("termination> ");
 			fflush(stdout);
 			ret = scanf("%" SCNu64, &(options->termination));
