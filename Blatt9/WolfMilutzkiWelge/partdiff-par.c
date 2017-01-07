@@ -1,14 +1,14 @@
 /****************************************************************************/
 /****************************************************************************/
 /**                                                                        **/
-/**                TU Muenchen - Institut fuer Informatik                  **/
+/**                 TU München - Institut für Informatik                   **/
 /**                                                                        **/
 /** Copyright: Prof. Dr. Thomas Ludwig                                     **/
 /**            Andreas C. Schmidt                                          **/
 /**                                                                        **/
 /** File:      partdiff-seq.c                                              **/
 /**                                                                        **/
-/** Purpose:   Partial differential equation solver for Gauss-Seidel and   **/
+/** Purpose:   Partial differential equation solver for Gauß-Seidel and   **/
 /**            Jacobi method.                                              **/
 /**                                                                        **/
 /****************************************************************************/
@@ -123,7 +123,7 @@ allocateMemory (size_t size)
         void *p = malloc(size);
 	if ((p = malloc(size)) == NULL)
 	{
-	  printf("Speicherprobleme! (%" PRIu64 " Bytes)\n", size);
+      printf("Speicherprobleme! (%" PRIu64 " Bytes angefordert)\n", size);
 	  MPI_Abort(MPI_COMM_WORLD, -1);
 	}
 
@@ -589,7 +589,7 @@ displayStatistics (struct calculation_arguments const* arguments, struct calcula
 	if (options->method == METH_GAUSS_SEIDEL)
 	{
 
-	  printf("Gauss-Seidel");
+		printf("Gauß-Seidel");
 
 	}
 	else if (options->method == METH_JACOBI)
@@ -625,6 +625,7 @@ displayStatistics (struct calculation_arguments const* arguments, struct calcula
 	printf("\n");
 	printf("Anzahl Iterationen: %" PRIu64 "\n", results->stat_iteration);
 	printf("Norm des Fehlers:   %e\n", results->stat_precision);
+	printf("\n");
 }
 
 #ifdef DEBUG
